@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="help\folder_does_not_exist.md" />
+    <None Remove="help\help.md" />
+    <None Remove="ino\razor_def.ino" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="help\datafolder_does_not_exist.md" />
+    <EmbeddedResource Include="help\folder_does_not_exist.md" />
+    <EmbeddedResource Include="help\help.md" />
+    <EmbeddedResource Include="ino\razor_def.ino" />
+  </ItemGroup>
+
+</Project>
