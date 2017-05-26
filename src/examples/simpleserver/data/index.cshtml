@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>ESP8266 Deurbel Settings</title>
+  <title>ESP8266 - LazorLike parser</title>
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
@@ -27,11 +27,12 @@
 
 <body>
     <div class="container">
-      <div class="row">
+      <div class="row hidden-sm-down">
          <h1 class="display-1">Example - LazorLike parser</h1>
          <p class="lead">Served from ESP8266</p>
          <hr />
-        <div class="row">
+      </div>
+      <div class="row">
         <div class="col-md-6">
           <p class=""><span class="lead">Light:</span><br/>
           <span class="display-3">@light() %</span>
@@ -42,16 +43,62 @@
           <span class="display-3">@temperature() °C</span>
           </p>
         </div>
-        </div>
-        </div>
+      </div>
+
         <div class="row">
+            <div class="col-md-4">
+                <div class="card card-danger text-center">
+                    <h4 class="card-header">Red</h4>
+                    <div class="card-block">
+                        <div class="card-text">
+                            <p>Currently: <strong>@red()</strong></p>
+                            <form method="POST">
+                                <button class="btn btn-secondary" type="submit" name="toggle" value="red">Toggle</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-success text-center">
+                    <h4 class="card-header">Green</h4>
+                    <div class="card-block">
+                        <div class="card-text">
+                            <p>Currently: <strong>@green()</strong></p>
+                            <form method="POST">
+                                <button class="btn btn-secondary" type="submit" name="toggle" value="green">Toggle</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-info text-center">
+                    <h4 class="card-header">Blue</h4>
+                    <div class="card-block">
+                        <div class="card-text">
+                            <p>Currently: <strong>@blue()</strong></p>
+                            <form method="POST">
+                                <button class="btn btn-secondary" type="submit" name="toggle" value="blue">Toggle</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+      <div class="row">
           @{ for(int i = 0; i < 10; i++) {
              <div class="col-md-3">
                 This is cell #@i
              </div>
             }
           }
-        </div>
+      </div>
+        
     </div>
 
   <footer class="footer">
