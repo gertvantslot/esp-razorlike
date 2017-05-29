@@ -53,7 +53,6 @@ C++ code.
 
 The above example could be parsed into something like:
 
-
     _razor_fromFile(response, &file, 3558, 3943);
     for(int i = 0; i < 3; i++) {
         int led = digitalRead(i);

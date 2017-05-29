@@ -41,10 +41,11 @@ float light() {
 }
 
 float measureLight() {
-	analog.setGain(GAIN_TWO);
+	analog.setGain(GAIN_ONE);
 	long raw = analog.readADC_SingleEnded(0);
-	double volt = (double)raw * 2.048 / (double)0x7FFF;
-	return 100.0 * (2.048 - volt) / 2.048;
+	double volt = (double)raw * 4.096 / (double)0x7FFF;
+	Serial.println(volt);
+	return 100.0 * (3.3 - volt) / 3.3;
 }
 
 float updateLight() {
@@ -162,6 +163,8 @@ void loop() {
 	if (millis() > nextMeasure) {
 		while (millis() > nextMeasure) nextMeasure += MEASURE_INTERVAL;
 
+		Serial.print("== ");
+		Serial.println(millis());
 		Serial.print("L: ");
 		Serial.print(updateLight());
 		Serial.println(" %");
@@ -169,5 +172,8 @@ void loop() {
 		Serial.print("T: ");
 		Serial.print(updateTemparature());
 		Serial.println(" C");
+
+		Serial.println();
+		Serial.println(ESP.getFreeHeap());
 	}
 }

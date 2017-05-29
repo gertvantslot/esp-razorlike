@@ -5,10 +5,10 @@ bool _razor_fromFile(AsyncResponseStream* response, File* file, int start, int e
 	uint8_t buf[_RAZOR_BUF_SIZE];
 	int len = end - start;
 
-	Serial.print("Sending file from: ");
-	Serial.print(start);
-	Serial.print(" - ");
-	Serial.print(len);
+	//Serial.print("Sending file from: ");
+	//Serial.print(start);
+	//Serial.print(" - ");
+	//Serial.print(len);
 
 	int todo = len;
 	int p = file->position();
@@ -19,7 +19,7 @@ bool _razor_fromFile(AsyncResponseStream* response, File* file, int start, int e
 		response->write(buf, avail);
 		todo -= avail;
 	}
-	Serial.println(" - OK");
+	//Serial.println(" - OK");
 	return true;
 }
 

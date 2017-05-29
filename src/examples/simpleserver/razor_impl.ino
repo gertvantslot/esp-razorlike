@@ -23,16 +23,22 @@ void index_cshtml(AsyncWebServerRequest *request) {
   _razor_fromExpression(response, blue());
 
   _razor_fromFile(response, &file, 3558, 3943);
- for(int i = 0; i < 10; i++) {
+ for(int i = 0; i < 12; i++) {
              
-  _razor_fromFile(response, &file, 3990, 4044);
+  _razor_fromFile(response, &file, 3990, 4009);
+  _razor_fromExpression(response, (i + 1));
+
+  _razor_fromFile(response, &file, 4017, 4103);
   _razor_fromExpression(response, i);
 
-  _razor_fromFile(response, &file, 4046, 4068);
+  _razor_fromFile(response, &file, 4105, 4125);
+  _razor_fromExpression(response, (i + 1));
+
+  _razor_fromFile(response, &file, 4133, 4178);
 
             }
           
-  _razor_fromFile(response, &file, 4095, 4310);
+  _razor_fromFile(response, &file, 4205, 4420);
   file.close(); 
   request->send(response);
 }

@@ -91,9 +91,11 @@
         </div>
 
       <div class="row">
-          @{ for(int i = 0; i < 10; i++) {
-             <div class="col-md-3">
-                This is cell #@i
+          @{ for(int i = 0; i < 12; i++) {
+             <div class="col-sm-@(i + 1) card card-block bg-faded">
+                 <p>
+                     This is cell #@i with width .col-sm-@(i + 1)
+                 </p>
              </div>
             }
           }
