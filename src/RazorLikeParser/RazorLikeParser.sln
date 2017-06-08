@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorLikeParser", "RazorLikeParser.csproj", "{23A0C289-2A46-414E-91E4-FA341D9FF0A1}"
 EndProject
@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 	ProjectSection(SolutionItems) = preProject
 		..\..\README.md = ..\..\README.md
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "settingsServer", "..\examples\settingsServer\settingsServer\settingsServer.vcxproj", "{29F4B9A0-AE56-40D4-BD6A-35E072838F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,12 @@ Global
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|Any CPU.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
+		{29F4B9A0-AE56-40D4-BD6A-35E072838F83}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{29F4B9A0-AE56-40D4-BD6A-35E072838F83}.Debug|x86.ActiveCfg = Debug|Win32
+		{29F4B9A0-AE56-40D4-BD6A-35E072838F83}.Debug|x86.Build.0 = Debug|Win32
+		{29F4B9A0-AE56-40D4-BD6A-35E072838F83}.Release|Any CPU.ActiveCfg = Release|Win32
+		{29F4B9A0-AE56-40D4-BD6A-35E072838F83}.Release|x86.ActiveCfg = Release|Win32
+		{29F4B9A0-AE56-40D4-BD6A-35E072838F83}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
