@@ -8,6 +8,8 @@
   <ItemGroup>
     <None Remove="help\folder_does_not_exist.md" />
     <None Remove="help\help.md" />
+    <None Remove="ino\razor.cpp" />
+    <None Remove="ino\razor.h" />
     <None Remove="ino\razor_def.ino" />
   </ItemGroup>
 
@@ -15,6 +17,8 @@
     <EmbeddedResource Include="help\datafolder_does_not_exist.md" />
     <EmbeddedResource Include="help\folder_does_not_exist.md" />
     <EmbeddedResource Include="help\help.md" />
+    <EmbeddedResource Include="ino\razor.cpp" />
+    <EmbeddedResource Include="ino\razor.h" />
     <EmbeddedResource Include="ino\razor_def.ino" />
   </ItemGroup>
 

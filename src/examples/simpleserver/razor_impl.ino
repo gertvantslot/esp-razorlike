@@ -34,11 +34,14 @@ void index_cshtml(AsyncWebServerRequest *request) {
   _razor_fromFile(response, &file, 4105, 4125);
   _razor_fromExpression(response, (i + 1));
 
-  _razor_fromFile(response, &file, 4133, 4178);
+  _razor_fromFile(response, &file, 4133, 4175);
+  _razor_fromExpression(response, Raw("<p>Raw HTML via @Raw.</p>"));
+
+  _razor_fromFile(response, &file, 4208, 4230);
 
             }
           
-  _razor_fromFile(response, &file, 4205, 4420);
+  _razor_fromFile(response, &file, 4257, 4472);
   file.close(); 
   request->send(response);
 }
