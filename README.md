@@ -29,6 +29,9 @@ Html code is send to the client. To insert the result of server (ESP8266) code, 
 
 The above code will insert the result from a call the the `temperature` method.
 
+Output that is of type `char *` will be Html encoded, for your safety. If you need your `char *` to be outputed
+as raw Html, use `@Raw( Your_code() )`.
+
 To execute C++ code on the server, use `@{ // C++ code here }`. To switch
 back to HTML code, start a new tag:
 
