@@ -16,10 +16,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="settingsServer.ino" />
+    <None Include="razor_def.ino" />
+    <None Include="razor_impl.ino" />
+    <None Include="data\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.settingsServer.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="razor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="razor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

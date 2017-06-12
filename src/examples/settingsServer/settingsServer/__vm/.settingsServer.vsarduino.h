@@ -107,5 +107,7 @@ typedef long __PTRDIFF_TYPE__;
 #define noInterrupts() cli()
 
 #include "settingsServer.ino"
+#include "razor_def.ino"
+#include "razor_impl.ino"
 #endif
 #endif

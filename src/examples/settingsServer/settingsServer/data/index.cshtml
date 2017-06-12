@@ -1,3 +1,6 @@
+﻿@{ 
+    onIndexRequest(request);
+}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,6 +10,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <title>@(settings.page_title) - Settings demo</title>
   </head>
   <body>
     <div class="container">
@@ -19,7 +24,7 @@
           <h2 class="col-sm-12">Generic settings</h2>
           <label for="page-title" class="col-form-label col-sm-3">Page title</label>
           <div class="col-sm-9">
-            <input class="form-control" type="text" value="?" id="page-title" /> 
+            <input class="form-control" type="text" value="@(settings.page_title)" id="page_title" name="page_title" /> 
           </div>
         </div>
 
@@ -28,15 +33,15 @@
           <label for="page-title" class="col-form-label col-sm-3">Control leds</label>
           <div class="col-sm-9 form-check form-check-inline">
             <label class="col-sm-3 form-check-label alert alert-danger">
-              <input class="form-check-input" type="checkbox" id="red" /> 
+              <input class="form-check-input" type="checkbox" id="red" name="red" @(settings.led_red ? "checked" : "") /> 
               Red
             </label>
             <label class="col-sm-3 form-check-label alert alert-success">
-              <input class="form-check-input" type="checkbox" id="green" /> 
+              <input class="form-check-input" type="checkbox" id="green" name="green"  @(settings.led_green ? "checked" : "") /> 
               Green
             </label>
             <label class="col-sm-3 form-check-label alert alert-info">
-              <input class="form-check-input" type="checkbox" id="blue" /> 
+              <input class="form-check-input" type="checkbox" id="blue" name="blue"  @(settings.led_blue ? "checked" : "") /> 
               Blue
             </label>
           </div>
@@ -46,11 +51,11 @@
           <h2 class="col-sm-12">Light settings</h2>
           <label for="light-min" class="col-form-label col-sm-3">Minimum trigger</label>
           <div class="col-sm-9">
-            <input class="form-control" type="number" value="30" id="light-min" /> 
+            <input class="form-control" type="number" value="30" id="light-min" name="light_min" /> 
           </div>
           <label for="light-max" class="col-form-label col-sm-3">Maximum trigger</label>
           <div class="col-sm-9">
-            <input class="form-control" type="number" value="60" id="light-max" /> 
+            <input class="form-control" type="number" value="60" id="light-max" name="light_max" /> 
           </div>
         </div>
 
@@ -58,7 +63,7 @@
           <h2 class="col-sm-12">Email</h2>
           <label for="email" class="col-form-label col-sm-3">Email</label>
           <div class="col-sm-9">
-            <input class="form-control" type="email" value="" id="email" /> 
+            <input class="form-control" type="email" value="" id="email" name="email" /> 
           </div>
         </div>
 
