@@ -18,7 +18,7 @@
         <div class="row">
             <h1>Settings example</h1>
         </div>
-        <form method="post">
+        <form method="post" id="frm">
 
         <div class="row form-group">
           <h2 class="col-sm-12">Generic settings</h2>
@@ -44,6 +44,9 @@
               <input class="form-check-input" type="checkbox" id="blue" name="blue"  @(settings.led_blue ? "checked" : "") /> 
               Blue
             </label>
+              <div class="col-sm-9">
+                  <p class="form-text text-muted">Set the leds in the position you want. Use the Submit button to store the startup/boot position.</p>
+              </div>
           </div>
         </div>
 
@@ -51,11 +54,11 @@
           <h2 class="col-sm-12">Light settings</h2>
           <label for="light-min" class="col-form-label col-sm-3">Minimum trigger</label>
           <div class="col-sm-9">
-            <input class="form-control" type="number" value="30" id="light-min" name="light_min" /> 
+            <input class="form-control" type="number" value="@settings.light_min" id="light-min" name="light_min" /> 
           </div>
           <label for="light-max" class="col-form-label col-sm-3">Maximum trigger</label>
           <div class="col-sm-9">
-            <input class="form-control" type="number" value="60" id="light-max" name="light_max" /> 
+            <input class="form-control" type="number" value="@settings.light_max" id="light-max" name="light_max" /> 
           </div>
         </div>
 
@@ -63,21 +66,29 @@
           <h2 class="col-sm-12">Email</h2>
           <label for="email" class="col-form-label col-sm-3">Email</label>
           <div class="col-sm-9">
-            <input class="form-control" type="email" value="" id="email" name="email" /> 
+            <input class="form-control" type="email" value="@settings.email" id="email" name="email" /> 
           </div>
         </div>
 
         <div class="row form-group">
           <div class="offset-sm-3 col-sm-9">
-            <input class="btn btn-primary" type="submit" value="Ok" id="ok" /> 
+            <input class="btn btn-primary" type="submit" value="Ok" id="ok" name="submit" /> 
           </div>
         </div>
 
         </form>
     </div>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+      <script type="text/javascript">
+          $(function () {
+              $(".form-check-input").change(function () {
+                  var url = "/" + this.id;
+                  jQuery.get(url);
+              });
+          });
+      </script>
   </body>
 </html>

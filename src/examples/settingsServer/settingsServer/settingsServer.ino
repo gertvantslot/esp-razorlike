@@ -67,7 +67,12 @@ bool getSettingsFromEEPROM() {
 	struct Settings buffer;
 	EEPROM.get(SETTINGS_ADDR, buffer);
 	uint32 storedCRC = buffer.crc32;
+	Serial.print("Received CRC:");
+	Serial.println(buffer.crc32);
+
 	updateSettingsCRC(&buffer);
+	Serial.print("calculated CRC:");
+	Serial.println(buffer.crc32);
 	uint32 calculatedCRC = buffer.crc32;
 	if (storedCRC == calculatedCRC) {
 		Serial.println("Valid settings found in EEPROM");
@@ -80,8 +85,13 @@ bool getSettingsFromEEPROM() {
 }
 
 void putSettingsInEEPROM() {
+	Serial.println("Settings will be stored");
+	Serial.print("Putting CRC:");
+	Serial.println(settings.crc32);
 	EEPROM.put(SETTINGS_ADDR, settings);
 	EEPROM.commit();
+	// Retrieve to see if correctly stored
+	getSettingsFromEEPROM();
 }
 
 bool settingsNeedUpdate() {
@@ -94,9 +104,15 @@ void putSettingsInEEPROMifNeeded() {
 	updateSettingsCRC(&settings);
 	if (settingsNeedUpdate()) {
 		Serial.println("EEPROM settings update needed");
-		EEPROM.put(SETTINGS_ADDR, settings);
+		putSettingsInEEPROM();
 	}
 }
+
+// == LEDS ====
+
+const int LED_R = D1; // Red
+const int LED_G = D2; // Green
+const int LED_B = D6; // Blue
 
 void setup() {
 	Serial.begin(115200);
@@ -104,6 +120,10 @@ void setup() {
 	// Initialize electronics
 	EEPROM.begin(512);
 	SPIFFS.begin();
+
+	pinMode(LED_R, OUTPUT);
+	pinMode(LED_G, OUTPUT);
+	pinMode(LED_B, OUTPUT);
 
 	// Retrieve settings if available and correct
 	initSettings();
@@ -123,25 +143,33 @@ void setup() {
 
 	razor_setup(&server);
 	server.on("/", index_cshtml);
-	server.serveStatic("/site.css", SPIFFS, "/site.css");
+	server.on("/red", HTTP_GET, [](AsyncWebServerRequest *request) {
+		settings.led_red = !settings.led_red;
+		request->send(200, "text/plain", String(settings.led_red));
+	});
+	server.on("/green", HTTP_GET, [](AsyncWebServerRequest *request) {
+		settings.led_green = !settings.led_green;
+		request->send(200, "text/plain", String(settings.led_green));
+	});
+	server.on("/blue", HTTP_GET, [](AsyncWebServerRequest *request) {
+		settings.led_blue = !settings.led_blue;
+		request->send(200, "text/plain", String(settings.led_blue));
+	});
 	server.begin();
 }
 
 void onIndexPost(AsyncWebServerRequest *request) {
-	Serial.println("Handling POST");
-
-	Serial.print("page_title: ");
-	Serial.println(request->arg("page_title"));
-
-	Serial.print("red: ");
-	Serial.println(request->arg("red"));
-
-	strncpy(settings.page_title, request->arg("page_title").c_str(), 49);
+	strlcpy(settings.page_title, request->arg("page_title").c_str(), 50);
 	settings.led_red = strncmp("on", request->arg("red").c_str(), 2) == 0;
 	settings.led_green = strncmp("on", request->arg("green").c_str(), 2) == 0;
 	settings.led_blue = strncmp("on", request->arg("blue").c_str(), 2) == 0;
-
-	putSettingsInEEPROMifNeeded();
+	settings.light_min = atoi(request->arg("light_min").c_str());
+	settings.light_max = atoi(request->arg("light_max").c_str());
+	strlcpy(settings.email, request->arg("email").c_str(), 100);
+	
+	if (request->arg("submit").length() != 0) {
+		putSettingsInEEPROMifNeeded();
+	}
 }
 
 void onIndexRequest(AsyncWebServerRequest *request) {
@@ -152,5 +180,7 @@ void onIndexRequest(AsyncWebServerRequest *request) {
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-  
+	digitalWrite(LED_R, settings.led_red ? HIGH : LOW);
+	digitalWrite(LED_G, settings.led_green);
+	digitalWrite(LED_B, settings.led_blue);
 }
