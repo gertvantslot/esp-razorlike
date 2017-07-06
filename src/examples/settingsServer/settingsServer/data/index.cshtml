@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     <title>@(settings.page_title) - Settings demo</title>
   </head>
@@ -21,8 +21,50 @@
         <form method="post" id="frm">
 
         <div class="row form-group">
+          <h2 class="col-sm-12">WiFi</h2>
+          <label class="col-form-label col-sm-3">WiFi mode</label>
+          <div class="col-sm-9 form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" id="wifi_ap" name="wifi_mode" @(settings.wifi_sta ? "" : "checked") value="ap" /> 
+              Access point
+            </label>
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" id="wifi_sta" name="wifi_mode"  @(settings.wifi_sta ? "checked" : "") value="sta" /> 
+              WiFi station - Connect to AP
+            </label>
+          </div>
+          <label for="ssid_name" class="col-form-label col-sm-3">SSID Name</label>
+          <div class="col-sm-9">
+            <input class="form-control" type="text" value="@(settings.ssid_name)" id="ssid_name" name="ssid_name" /> 
+          </div>
+          <label for="ssid_password" class="col-form-label col-sm-3">SSID Password</label>
+          <div class="col-sm-9">
+            <input class="form-control" type="password" value="" id="ssid_password" name="ssid_password" /> 
+          </div>
+          <div class="col-sm-12">
+              <p class="form-text text-muted">Changing any of the above settings, will cause the device to reboot.</p>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <h2 class="col-sm-12">WiFi - Fallback</h2>
+          <div class="col-sm-12">
+              <p class="form-text text-muted">If the device is unable to connect to the default network/SSID, it will start a new network with these settings.</p>
+          </div>          
+          <label for="emergency_ssid_name" class="col-form-label col-sm-3">Fallback SSID</label>
+          <div class="col-sm-9">
+            <input class="form-control" type="text" value="@(settings.emergency_ssid_name)" id="emergency_ssid_name" name="emergency_ssid_name" /> 
+          </div>
+          <label for="emergency_ssid_password" class="col-form-label col-sm-3">Fallback Password</label>
+          <div class="col-sm-9">
+            <input class="form-control" type="password" value="" id="emergency_ssid_password" name="emergency_ssid_password" /> 
+          </div>
+
+        </div>
+
+        <div class="row form-group">
           <h2 class="col-sm-12">Generic settings</h2>
-          <label for="page-title" class="col-form-label col-sm-3">Page title</label>
+          <label for="page_title" class="col-form-label col-sm-3">Page title</label>
           <div class="col-sm-9">
             <input class="form-control" type="text" value="@(settings.page_title)" id="page_title" name="page_title" /> 
           </div>
@@ -30,18 +72,18 @@
 
         <div class="row form-group">
           <h2 class="col-sm-12">Leds</h2>
-          <label for="page-title" class="col-form-label col-sm-3">Control leds</label>
+          <label class="col-form-label col-sm-3">Control leds</label>
           <div class="col-sm-9 form-check form-check-inline">
             <label class="col-sm-3 form-check-label alert alert-danger">
-              <input class="form-check-input" type="checkbox" id="red" name="red" @(settings.led_red ? "checked" : "") /> 
+              <input class="form-check-input led-blink" type="checkbox" id="red" name="red" @(settings.led_red ? "checked" : "") /> 
               Red
             </label>
             <label class="col-sm-3 form-check-label alert alert-success">
-              <input class="form-check-input" type="checkbox" id="green" name="green"  @(settings.led_green ? "checked" : "") /> 
+              <input class="form-check-input led-blink" type="checkbox" id="green" name="green"  @(settings.led_green ? "checked" : "") /> 
               Green
             </label>
             <label class="col-sm-3 form-check-label alert alert-info">
-              <input class="form-check-input" type="checkbox" id="blue" name="blue"  @(settings.led_blue ? "checked" : "") /> 
+              <input class="form-check-input led-blink" type="checkbox" id="blue" name="blue"  @(settings.led_blue ? "checked" : "") /> 
               Blue
             </label>
               <div class="col-sm-9">
@@ -72,19 +114,20 @@
 
         <div class="row form-group">
           <div class="offset-sm-3 col-sm-9">
-            <input class="btn btn-primary" type="submit" value="Ok" id="ok" name="submit" /> 
+            <input class="btn btn-primary" type="submit" value="Apply" id="ok" name="submit" /> 
+            <input class="btn btn-danger btn-sm" type="submit" value="reboot" id="reboot" name="reboot" />
           </div>
         </div>
 
         </form>
     </div>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="/js/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="/js/tether.min.js"   ></script>
+    <script src="/js/bootstrap.min.js"></script>
       <script type="text/javascript">
           $(function () {
-              $(".form-check-input").change(function () {
+              $(".led-blink").change(function () {
                   var url = "/" + this.id;
                   jQuery.get(url);
               });
