@@ -15,6 +15,9 @@ bool reboot = false;
 bool wifi_emergency = false;
 unsigned long emergency_mode_end;
 
+#define WRITE_SETTINGS_INTERVAL 30000
+unsigned long write_settings;
+
 // CalculateCRC32 from https://github.com/esp8266/Arduino/blob/master/libraries/esp8266/examples/RTCUserMemory/RTCUserMemory.ino 
 uint32_t calculateCRC32(const uint8_t *data, size_t length)
 {
@@ -120,6 +123,22 @@ void putSettingsInEEPROMifNeeded() {
 const int LED_R = D1; // Red
 const int LED_G = D2; // Green
 const int LED_B = D6; // Blue
+
+void printInfo() {
+	if (settings.wifi_sta) {
+		Serial.print("STA - IP: ");
+		Serial.println(WiFi.localIP());
+	}
+
+	if (wifi_emergency || !settings.wifi_sta) {
+		Serial.print("SSID: ");
+		char * ssid = wifi_emergency ? settings.emergency_ssid_name : settings.ssid_name;
+		Serial.println(ssid);
+		Serial.print("IP: ");
+		Serial.println(WiFi.softAPIP());
+	}
+
+}
 
 void setup() {
 	Serial.begin(115200);
@@ -254,12 +273,17 @@ void onIndexRequest(AsyncWebServerRequest *request) {
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-	digitalWrite(LED_R, settings.led_red ? HIGH : LOW);
+	digitalWrite(LED_R, settings.led_red);
 	digitalWrite(LED_G, settings.led_green);
 	digitalWrite(LED_B, settings.led_blue);
 
 	if (wifi_emergency && millis() > emergency_mode_end) {
 		reboot = true;
+	}
+
+	if (write_settings < millis()) {
+		printInfo();
+		write_settings += WRITE_SETTINGS_INTERVAL;
 	}
 
 	if (reboot) {

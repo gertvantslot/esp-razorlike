@@ -287,4 +287,4 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-src/examples/simpleserver/__vm/
+**/__vm/*
