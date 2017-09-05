@@ -78,6 +78,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="data\index.cshtml" />
+    <None Include="data\settings.cshtml" />
     <None Include="razor_def.ino" />
     <None Include="razor_impl.ino" />
     <None Include="settingsServer.ino">

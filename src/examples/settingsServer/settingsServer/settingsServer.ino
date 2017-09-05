@@ -202,6 +202,7 @@ void setup() {
 
 	razor_setup(&server);
 	server.on("/", index_cshtml);
+	server.on("/settings", settings_cshtml);
 	server.serveStatic("/js/", SPIFFS, "/js/").setCacheControl("max-age=600");
 	server.serveStatic("/css/", SPIFFS, "/css/").setCacheControl("max-age=600");
 
@@ -220,7 +221,7 @@ void setup() {
 	server.begin();
 }
 
-void onIndexPost(AsyncWebServerRequest *request) {
+void onSettingsPost(AsyncWebServerRequest *request) {
 	strlcpy(settings.page_title, request->arg("page_title").c_str(), 50);
 	strlcpy(settings.email, request->arg("email").c_str(), 100);
 
@@ -265,9 +266,9 @@ void onIndexPost(AsyncWebServerRequest *request) {
 
 }
 
-void onIndexRequest(AsyncWebServerRequest *request) {
+void onSettingsRequest(AsyncWebServerRequest *request) {
 	if (request->method() == WebRequestMethod::HTTP_POST) {
-		onIndexPost(request);
+		onSettingsPost(request);
 	}
 }
 

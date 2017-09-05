@@ -18,6 +18,7 @@
     <None Include="settingsServer.ino" />
     <None Include="razor_def.ino" />
     <None Include="razor_impl.ino" />
+    <None Include="data\settings.cshtml" />
     <None Include="data\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
