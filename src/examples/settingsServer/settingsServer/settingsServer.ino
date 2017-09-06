@@ -9,6 +9,7 @@
 #include <Wire.h>
 #include <ESPAsyncWebServer.h>
 #include <EEPROM.h>
+#include <Adafruit_ADS1015.h>
 
 AsyncWebServer server(80);
 bool reboot = false;
@@ -118,6 +119,99 @@ void putSettingsInEEPROMifNeeded() {
 	}
 }
 
+
+// == I2C Analog board ADS1115
+// https://www.adafruit.com/product/1085
+
+static const int PIN_SCL = D5; // SCL; // 5
+static const int PIN_SDA = D4; // SDA; // 4
+Adafruit_ADS1115 analog;
+
+// == Smooth
+
+const float SMOOTH = 50;
+const float SMOOTH_INIT = -999.9;
+
+float smooth(float current, float newValue) {
+	if (current == SMOOTH_INIT) {
+		return newValue;
+	}
+
+	return ((current * (SMOOTH - 1.0)) + newValue) / SMOOTH;
+}
+
+// == Light ========================
+
+float _light = SMOOTH_INIT;
+
+float light() {
+	return _light;
+}
+
+float measureLight() {
+	analog.setGain(GAIN_ONE);
+	long raw = analog.readADC_SingleEnded(0);
+	double volt = (double)raw * 4.096 / (double)0x7FFF;
+	return 100.0 * (3.3 - volt) / 3.3;
+}
+
+float updateLight() {
+	return _light = smooth(_light, measureLight());
+}
+
+// == Temperature ==============
+
+float _temp = SMOOTH_INIT;
+
+float temperature() {
+	return _temp;
+}
+
+float measureTemp() {
+	// This will work for temperatures below 50°C
+	analog.setGain(GAIN_FOUR);
+	long raw = analog.readADC_SingleEnded(1);
+	if (raw > 0x4000 && raw < 0x7FFF) {
+		double volt = (double)raw * 1.024 / (double)0x7FFF;
+		return (volt - 0.5) * 100;
+	}
+	if (raw == 0x7FFF) {
+		// Temperature is above 50°C, and above 1V. This is
+		// above the GAIN_FOUR range
+		// We will loose 1 bit precision
+		analog.setGain(GAIN_TWO);
+		raw = analog.readADC_SingleEnded(1);
+		double volt = (double)raw * 2.048 / (double)0x7FFF;
+		return (volt - 0.5) * 100;
+	}
+	// We are below 0.5 V (below 0°C temperatures), we can double the precision here
+	analog.setGain(GAIN_EIGHT);
+	raw = analog.readADC_SingleEnded(1);
+	double volt = (double)raw * 0.512 / (double)0x7FFF;
+	return (volt - 0.5) * 100;
+}
+
+float updateTemparature() {
+	return _temp = smooth(_temp, measureTemp());
+}
+
+#define LIGHT_TEMP_INTERVAL 1000
+unsigned long check_time;
+bool check_temp_switch;
+void checkLightAndTemp() {
+	if (check_time > millis()) {
+		return;
+	}
+	check_time += LIGHT_TEMP_INTERVAL;
+	if (check_temp_switch) {
+		updateTemparature();
+	}
+	else {
+		updateLight();
+	}
+	check_temp_switch = !check_temp_switch;
+}
+
 // == LEDS ====
 
 const int LED_R = D1; // Red
@@ -149,6 +243,11 @@ void setup() {
 	EEPROM.begin(sizeof(Settings));
 	SPIFFS.begin();
 
+	// Temperature and light
+	Wire.begin(PIN_SDA, PIN_SCL);
+	analog.begin();
+
+	// LEDS
 	pinMode(LED_R, OUTPUT);
 	pinMode(LED_G, OUTPUT);
 	pinMode(LED_B, OUTPUT);
@@ -277,6 +376,8 @@ void loop() {
 	digitalWrite(LED_R, settings.led_red);
 	digitalWrite(LED_G, settings.led_green);
 	digitalWrite(LED_B, settings.led_blue);
+
+	checkLightAndTemp();
 
 	if (wifi_emergency && millis() > emergency_mode_end) {
 		reboot = true;

@@ -5,16 +5,22 @@ void index_cshtml(AsyncWebServerRequest *request) {
   _razor_fromFile(response, &file, 0, 303);
   _razor_fromExpression(response, (settings.page_title));
 
-  _razor_fromFile(response, &file, 325, 1253);
+  _razor_fromFile(response, &file, 325, 586);
+  _razor_fromExpression(response, (temperature()));
+
+  _razor_fromFile(response, &file, 602, 749);
+  _razor_fromExpression(response, light());
+
+  _razor_fromFile(response, &file, 757, 1412);
   _razor_fromExpression(response, (settings.led_red ? "checked" : ""));
 
-  _razor_fromFile(response, &file, 1289, 1526);
+  _razor_fromFile(response, &file, 1448, 1685);
   _razor_fromExpression(response, (settings.led_green ? "checked" : ""));
 
-  _razor_fromFile(response, &file, 1564, 1798);
+  _razor_fromFile(response, &file, 1723, 1957);
   _razor_fromExpression(response, (settings.led_blue ? "checked" : ""));
 
-  _razor_fromFile(response, &file, 1835, 2670);
+  _razor_fromFile(response, &file, 1994, 2829);
   file.close(); 
   request->send(response);
 }

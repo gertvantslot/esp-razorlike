@@ -16,16 +16,18 @@
             <h1>Settings example - Main page</h1>
         </div>
         <div class="row">
-            <div class="col-sm-6">
-                Current temperature:
+            <div class="col-sm-6  lead">
+                <h1 class="display-2">@(temperature()) °C</h1>
+                <p>Temperature</p>
             </div>
-            <div class="col-sm-6">
-                Current light:
+            <div class="col-sm-6  lead">
+                <h1 class="display-2">@light() %</h1>
+                <p>Light</p>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <a href="/settings">Settings</a>
+                <a class="btn btn-lg btn-primary" href="/settings">Settings</a>
             </div>
         </div>
 
